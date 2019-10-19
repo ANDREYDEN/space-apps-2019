@@ -53,6 +53,8 @@ const updateMarker = ({ placemark, lat, lng, alt }) => {
 }
 
 window.onload = () => {
+    var a = document.getElementById("chtoto_grab").innerHTML;
+    alert(a);
     let wwd = initGlobe()
     var placemarkLayer = new WorldWind.RenderableLayer("Placemark")
     wwd.addLayer(placemarkLayer)
@@ -72,3 +74,4 @@ window.onload = () => {
         wwd.redraw()
     }, 100);
 }   
+
