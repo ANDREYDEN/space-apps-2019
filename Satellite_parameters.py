@@ -10,6 +10,7 @@ from os import path
 
 def cartesianToSpherical(x, y, z):  
     x += 6371
+    #print(x, y, z)
     r = math.sqrt(x**2 + y**2 + z**2)
     if r == 0:
         pass
@@ -30,18 +31,18 @@ def getSatelliteByName(gName):
     for x in range(0, len(lines) - 2, 3):   
         satList.append({"name": lines[x].strip(), "satLine1": lines[x + 1].strip(), "satLine2": lines[x + 2].strip()})
      
-    position, velocity = 0, 0
+    position = 0
     for x in satList:
         if x["name"] == gName:
             line1 = x["satLine1"]
             line2 = x["satLine2"]
             satellite = twoline2rv(line1, line2, wgs72)
-            position, velocity = satellite.propagate(dt.now().year, dt.now().month, dt.now().day, dt.now().hour, dt.now().minute, dt.now().second) #y, m, d, h, m, s
+            position = satellite.propagate(dt.now().year, dt.now().month, dt.now().day, dt.now().hour, dt.now().minute, dt.now().second)[0] #y, m, d, h, m, s
+            #print(position)
 
     f.close()
-    return position, velocity
+    return cartesianToSpherical(position[0], position[1], position[2])
 
 if __name__ == "__main__":
-    pos, vel = getSatelliteByName("OAO 2")
+    pos = getSatelliteByName("OAO 2")
     print(cartesianToSpherical(pos[0], pos[1], pos[2]))
-    print(cartesianToSpherical(vel[0], vel[1], vel[2]))
