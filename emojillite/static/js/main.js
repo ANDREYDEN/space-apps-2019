@@ -1,6 +1,8 @@
+
 const initGlobe = () => {
     let wwd = new WorldWind.WorldWindow("canvasOne")
     wwd.addLayer(new WorldWind.BMNGLandsatLayer())
+    wwd.addLayer(new WorldWind.BMNGOneImageLayer())
     return wwd
 }
 
@@ -17,7 +19,7 @@ const addMarker = ({lat, lng, alt}) => {
         WorldWind.OFFSET_FRACTION, 1.0
     )
 
-    placemarkAttributes.imageSource = "../img/fire.png"
+    placemarkAttributes.imageSource = "/static/img/fire.png"
     placemarkAttributes.imageScale = 0.3
 
     let position = new WorldWind.Position(lat, lng, alt)
