@@ -1,7 +1,6 @@
 const initGlobe = () => {
     let wwd = new WorldWind.WorldWindow("canvasOne")
     wwd.addLayer(new WorldWind.BMNGLandsatLayer())
-    wwd.addLayer(new WorldWind.BMNGOneImageLayer())
     return wwd
 }
 
@@ -40,7 +39,15 @@ const addMarker = ({lat, lng, alt}) => {
 }
 
 const updateMarker = ({ placemark, lat, lng, alt }) => {
-
+    placemark.position = new WorldWind.Position(lat, lng, alt)
+    placemark.label =
+        "(" +
+        placemark.position.latitude.toPrecision(5).toString() +
+        ", " +
+        placemark.position.longitude.toPrecision(5).toString() +
+        ", " +
+        placemark.position.altitude.toPrecision(10).toString() +
+        ")"
 }
 
 window.onload = () => {
@@ -49,11 +56,17 @@ window.onload = () => {
     wwd.addLayer(placemarkLayer)
     var lng = -106;
     var lat = 55;
-    placemarkLayer.addRenderable(addMarker({ lat: lat, lng: lng, alt: 1000000 }))
+    placemarkLayer.addRenderable(addMarker({ lat: lat, lng: lng, alt: 1000000 }))        
+
     setInterval(() => {
-        lng += (0.1 * Math.floor(Math.random() * 5))
-        lat += (0.1 * Math.floor(Math.random() * 5))
-        placemarkLayer.renderables[0].position = new WorldWind.Position(lat, lng, 1000000)
-    }, 10);
-        
+        lng += (0.01 * Math.floor(Math.random() * 5))
+        lat += (0.01 * Math.floor(Math.random() * 5))
+        updateMarker({
+            placemark: placemarkLayer.renderables[0],
+            lat: lat,
+            lng: lng,
+            alt: 1000000
+        })
+        wwd.redraw()
+    }, 100);
 }   
