@@ -5,7 +5,7 @@
 from sgp4.earth_gravity import wgs72
 from sgp4.io import twoline2rv
 from datetime import datetime as dt
-import math
+import math 
 from os import path
 
 def cartesianToSpherical(x, y, z):  

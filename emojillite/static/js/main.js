@@ -56,19 +56,18 @@ window.onload = () => {
     let wwd = initGlobe()
     var placemarkLayer = new WorldWind.RenderableLayer("Placemark")
     wwd.addLayer(placemarkLayer)
-    var lng = -106;
-    var lat = 55;
-    placemarkLayer.addRenderable(addMarker({ lat: lat, lng: lng, alt: 1000000 }))        
+    placemarkLayer.addRenderable(addMarker({ lat: parseFloat(lat), lng: parseFloat(lng), alt: parseFloat(alt) }))        
 
-    setInterval(() => {
-        lng += (0.01 * Math.floor(Math.random() * 5))
-        lat += (0.01 * Math.floor(Math.random() * 5))
-        updateMarker({
-            placemark: placemarkLayer.renderables[0],
-            lat: lat,
-            lng: lng,
-            alt: 1000000
-        })
-        wwd.redraw()
-    }, 100);
+    // setInterval(() => {
+    //     lng += (0.01 * Math.floor(Math.random() * 5))
+    //     lat += (0.01 * Math.floor(Math.random() * 5))
+    //     updateMarker({
+    //         placemark: placemarkLayer.renderables[0],
+    //         lat: lat,
+    //         lng: lng,
+    //         alt: 1000000
+    //     })
+    //     wwd.redraw()
+    // }, 100);
 }   
+
