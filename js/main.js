@@ -22,23 +22,14 @@ window.onload = () => {
         1.0
     )
 
-    placemarkAttributes.imageSource =
-        WorldWind.configuration.baseUrl + "images/pushpins/plain-red.png"
+    placemarkAttributes.imageSource = "../img/fire.png"
+    placemarkAttributes.imageScale = 0.3
+
     var position = new WorldWind.Position(55.0, -106.0, 1000000.0)
-    var placemark = new WorldWind.Placemark(
-        position,
-        false,
-        placemarkAttributes
-    )
-
-    placemark.label =
-        "Placemark\n" +
-        "Lat " +
-        placemark.position.latitude.toPrecision(4).toString() +
-        "\n" +
-        "Lon " +
-        placemark.position.longitude.toPrecision(5).toString()
-
+    var placemark = new WorldWind.Placemark(position, false, placemarkAttributes)
+    placemark.label = '(' + placemark.position.latitude.toPrecision(5).toString() + ', ' + 
+                            placemark.position.longitude.toPrecision(5).toString() + ', ' + 
+                            placemark.position.altitude.toPrecision(10).toString() + ')'
     placemark.alwaysOnTop = true
     placemarkLayer.addRenderable(placemark)
     var modelLayer = new WorldWind.RenderableLayer("Duck")

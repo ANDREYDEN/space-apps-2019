@@ -4,5 +4,13 @@
 }
 
 body {
-    background: darkblue;
+    background-image: url("../img/background.png");
+    background-size: 100vw;
+    background-repeat: no-repeat;
+    text-align:center;
+}
+
+#canvasOne {
+    width: 100vw; 
+    height: 100vh;
 }
