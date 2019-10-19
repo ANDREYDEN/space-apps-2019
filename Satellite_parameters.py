@@ -1,10 +1,14 @@
+#input: name of the satellite as string
+#output: position of the given satellite in real-time (latitude(radians), longitude(radians), altitude(kilometers))
+
+
 from sgp4.earth_gravity import wgs72
 from sgp4.io import twoline2rv
 from datetime import datetime as dt
 import math
 from os import path
 
-def cartesianToSpherical(x, y, z):
+def cartesianToSpherical(x, y, z):  
     x += 6371
     r = math.sqrt(x**2 + y**2 + z**2)
     if r == 0:
