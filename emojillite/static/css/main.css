@@ -5,20 +5,12 @@
 
 body {
     background-image: url("../img/background.png");
-<<<<<<< HEAD
-=======
     background-size: 100vw;
->>>>>>> 201c6cea8f9a62e33309645665f7b5f9095526a1
     background-repeat: no-repeat;
     text-align:center;
 }
 
 #canvasOne {
-<<<<<<< HEAD
-    width: 100vw; 
-    height: 100vh;
-=======
     width: 100vw;
     height: 100vh; 
->>>>>>> 201c6cea8f9a62e33309645665f7b5f9095526a1
 }
