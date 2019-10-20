@@ -14,19 +14,11 @@
         Your browser does not support HTML5 Canvas.
     </canvas>
 
-    <!-- <script>
-        alert("hi {{lastname}}")
-    </script> -->
-<!-- 
-    <div id="chtoto_grab" style="display:none">
-        {{lat}} {{lng}} {{alt}}
-    </div> -->
-
     <script>
         sats = []
     </script>
 
-    {% for s in sats %}
+    {% for s in satellites %}
         <script>
             sats.push("{{s}}")
         </script>
