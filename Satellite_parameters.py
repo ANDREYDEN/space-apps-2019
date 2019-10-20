@@ -50,13 +50,14 @@ def getSatelliteByName(gName):
             line1 = x["satLine1"]
             line2 = x["satLine2"]
             satellite = twoline2rv(line1, line2, wgs72)
-            position = satellite.propagate(dt.now().year, dt.now().month, dt.now().day + 1, dt.now().hour - 20, dt.now().minute, dt.now().second)[0] #y, m, d, h, m, s
-            print("pos", position)
+            #print(dt.now().year, dt.now().month, dt.now().day + (dt.now().hour + 4) // 24, (dt.now().hour + 4) % 24, dt.now().minute, dt.now().second)
+            position = satellite.propagate(dt.now().year, dt.now().month, dt.now().day + (dt.now().hour + 4) // 24, (dt.now().hour + 4) % 24, dt.now().minute, dt.now().second)[0] #y, m, d, h, m, s
+            #print("pos", position)
     f.close()
     return cartesianToSpherical(position[0], position[1], position[2])
 
-#print(sphtocar(-7 /180*3.14,80/180*3.14, 738))
+#print(sphtocar(38 /180*3.14, 62 /180*3.14, 421))
 
 if __name__ == "__main__":
-    pos = getSatelliteByName("OAO 2")
-    print("test", (pos[0] * 180 /3.14, pos[1] *180 /3.14, pos[2]))
+    pos = getSatelliteByName("ISS (ZARYA)")
+    #print("test", (pos[0] * 180 /3.14, pos[1] *180 /3.14, pos[2]))
