@@ -1,9 +1,13 @@
+const handleClick = () => {
+    console.log('lol')
+}
 
 const initGlobe = () => {
     let wwd = new WorldWind.WorldWindow("canvasOne")
     wwd.navigator.range = 30000000
     wwd.addLayer(new WorldWind.BMNGLandsatLayer())
     wwd.addLayer(new WorldWind.BMNGOneImageLayer())
+    wwd.addEventListener('onClick', handleClick)
     return wwd
 }
 
