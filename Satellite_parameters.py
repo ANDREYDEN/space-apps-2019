@@ -5,13 +5,14 @@
 from sgp4.earth_gravity import wgs72
 from sgp4.io import twoline2rv
 from datetime import datetime as dt
-import math 
+import math
 from os import path
 
 def cartesianToSpherical(x, y, z):  
-    x += 6371
-    #print(x, y, z)
     r = math.sqrt(x**2 + y**2 + z**2)
+    lat = 0
+    lon = 0
+    alt = 0
     if r == 0:
         pass
     elif x == 0 and y == 0:
@@ -38,11 +39,10 @@ def getSatelliteByName(gName):
             line2 = x["satLine2"]
             satellite = twoline2rv(line1, line2, wgs72)
             position = satellite.propagate(dt.now().year, dt.now().month, dt.now().day, dt.now().hour, dt.now().minute, dt.now().second)[0] #y, m, d, h, m, s
-            #print(position)
 
     f.close()
     return cartesianToSpherical(position[0], position[1], position[2])
 
 if __name__ == "__main__":
     pos = getSatelliteByName("OAO 2")
-    print(cartesianToSpherical(pos[0], pos[1], pos[2]))
+    print("test", cartesianToSpherical(pos[0], pos[1], pos[2]))
