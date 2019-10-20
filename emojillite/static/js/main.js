@@ -4,6 +4,7 @@ const initGlobe = () => {
     wwd.addLayer(new WorldWind.BMNGLandsatLayer())
     wwd.addLayer(new WorldWind.BMNGOneImageLayer())
     wwd.addLayer(new WorldWind.ViewControlsLayer(wwd))
+    wwd.addLayer(new WorldWind.StarFieldLayer())
     return wwd
 }
 

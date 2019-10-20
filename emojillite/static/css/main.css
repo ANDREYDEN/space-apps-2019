@@ -4,7 +4,8 @@
 }
 
 body {
-    background-image: url("../img/background.png");
+    /* background-image: url("../img/background.png"); */
+    background: black;
     background-size: 100vw;
     background-repeat: no-repeat;
     text-align:center;
