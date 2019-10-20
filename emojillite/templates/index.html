@@ -23,12 +23,13 @@
     </div> -->
 
     <script>
-        lat = "{{lat}}"
-        lng = "{{lng}}"
-        alt = "{{alt}}"
-        asd = "{{aoa2}}"
+        sats = []
     </script>
 
-
+    {% for s in sats %}
+        <script>
+            sats.push("{{s}}")
+        </script>
+    {% endfor %}
 </body>
 </html>
