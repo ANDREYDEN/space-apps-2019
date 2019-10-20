@@ -8,6 +8,14 @@ from datetime import datetime as dt
 import math
 from os import path
 
+def sphtocar(lat, lon, alt):
+    earthRadius = 6371 + alt
+    x = earthRadius * math.cos(lat)*math.cos(lon)
+    y = earthRadius * math.cos(lat)*math.sin(lon)
+    z = earthRadius * math.sin(lat)
+    r = math.sqrt(x**2 + y**2 + z**2)
+    return x, y, z
+
 def cartesianToSpherical(x, y, z):  
     r = math.sqrt(x**2 + y**2 + z**2)
     lat = 0
@@ -19,8 +27,12 @@ def cartesianToSpherical(x, y, z):
         lat = math.pi / 2 * abs(z) / z
         lon = 0
     else:
-        lat = math.acos(math.sqrt(x**2 + y**2) / r)
-        lon = math.acos(x / math.sqrt(x**2 + y**2))
+        lat = math.atan(z / math.sqrt(x**2 + y**2))
+        lon = math.atan(y / x)
+        if x < 0 and y > 0:
+            lon += math.pi
+        if x < 0 and y < 0:
+            lon = lon - math.pi
     alt = r - 6371
     return lat, lon, alt
 
@@ -38,11 +50,13 @@ def getSatelliteByName(gName):
             line1 = x["satLine1"]
             line2 = x["satLine2"]
             satellite = twoline2rv(line1, line2, wgs72)
-            position = satellite.propagate(dt.now().year, dt.now().month, dt.now().day, dt.now().hour, dt.now().minute, dt.now().second)[0] #y, m, d, h, m, s
-
+            position = satellite.propagate(dt.now().year, dt.now().month, dt.now().day + 1, dt.now().hour - 20, dt.now().minute, dt.now().second)[0] #y, m, d, h, m, s
+            print("pos", position)
     f.close()
     return cartesianToSpherical(position[0], position[1], position[2])
 
+#print(sphtocar(-7 /180*3.14,80/180*3.14, 738))
+
 if __name__ == "__main__":
     pos = getSatelliteByName("OAO 2")
-    print("test", cartesianToSpherical(pos[0], pos[1], pos[2]))
+    print("test", (pos[0] * 180 /3.14, pos[1] *180 /3.14, pos[2]))
