@@ -53,11 +53,22 @@ const updateMarker = ({ placemark, lat, lng, alt }) => {
 }
 
 window.onload = () => {
+    console.log(asd)
+    asd = asd.substr(asd.indexOf('[')+1)
+    asd = asd.slice(asd[-1], asd.indexOf(']'))
+    asd = asd.split(',')
+    console.log(asd)
+    let numbers = []
+    for (let i = 0; i<3; i++){
+        numbers[i] = parseInt(asd[i])
+        console.log(numbers[i])
+    }
+    console.log(asd)
+
     let wwd = initGlobe()
     var placemarkLayer = new WorldWind.RenderableLayer("Placemark")
     wwd.addLayer(placemarkLayer)
     placemarkLayer.addRenderable(addMarker({ lat: parseFloat(lat), lng: parseFloat(lng), alt: parseFloat(alt) }))        
-
     // setInterval(() => {
     //     lng += (0.01 * Math.floor(Math.random() * 5))
     //     lat += (0.01 * Math.floor(Math.random() * 5))
