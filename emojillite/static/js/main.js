@@ -11,7 +11,7 @@ const initGlobe = () => {
     return wwd
 }
 
-const addMarker = ({lat, lng, alt}) => {
+const addMarker = ({ lat, lng, alt, image, name}) => {
     let placemarkAttributes = new WorldWind.PlacemarkAttributes(null)
     placemarkAttributes.imageOffset = new WorldWind.Offset(
         WorldWind.OFFSET_FRACTION, 0.3,
@@ -24,7 +24,7 @@ const addMarker = ({lat, lng, alt}) => {
         WorldWind.OFFSET_FRACTION, 1.0
     )
 
-    placemarkAttributes.imageSource = "/static/img/fire.png"
+    placemarkAttributes.imageSource = '/static/img/emojis/' + image
     placemarkAttributes.imageScale = 0.3
 
     let position = new WorldWind.Position(lat, lng, alt)
@@ -33,44 +33,41 @@ const addMarker = ({lat, lng, alt}) => {
         false,
         placemarkAttributes
     )
-    updateMarker({placemark: placemark, lat: lat, lng: lng, alt: alt})
+    updateMarker({placemark: placemark, lat: lat, lng: lng, alt: alt, name: name})
     placemark.alwaysOnTop = true
     return placemark
 }
 
-const updateMarker = ({ placemark, lat, lng, alt }) => {
+const updateMarker = ({ placemark, lat, lng, alt, name }) => {
     placemark.position = new WorldWind.Position(lat, lng, alt)
-    placemark.label =
-        "(" +
-        placemark.position.latitude.toFixed(3).toString() +
-        ", " +
-        placemark.position.longitude.toFixed(3).toString() +
-        ", " +
-        (placemark.position.altitude/1000).toFixed(3).toString() +
-        ")"
+    placemark.label = name
+        // "(" +
+        // placemark.position.latitude.toFixed(3).toString() +
+        // ", " +
+        // placemark.position.longitude.toFixed(3).toString() +
+        // ", " +
+        // (placemark.position.altitude/1000).toFixed(3).toString() +
+        // ")"
 }
 
-function stringToCoords(asd) {
-    console.log(asd)
-    asd = asd.substr(asd.indexOf('[')+1)
-    asd = asd.slice(asd[-1], asd.indexOf(']'))
-    asd = asd.split(' ')
-    console.log(asd + typeof(asd[0]))
-    let numbers = []
+function stringToCoords(stringData) {
+    stringData = stringData.split(' ')
+    let data = []
     for (let i = 0; i<3; i++){
-        numbers[i] = parseFloat(asd[i])
+        data[i] = parseFloat(stringData[i])
     }
-    return numbers
+    data[3] = stringData[3]
+    data[4] = stringData[4]
+    return data
 }
 
 window.onload = () => {
     let wwd = initGlobe()
     var placemarkLayer = new WorldWind.RenderableLayer("Placemark")
     wwd.addLayer(placemarkLayer)
-    console.log(sats)
     sats.forEach(sat => {
-        let coords = stringToCoords(sat)
-        placemarkLayer.addRenderable(addMarker({ lat: coords[0], lng: coords[1], alt: coords[2] }))         
+        let data = stringToCoords(sat)
+        placemarkLayer.addRenderable(addMarker({ lat: data[0], lng: data[1], alt: data[2], image: data[3], name: data[4]}))         
     });
     // setInterval(() => {
     //     lng += (0.01 * Math.floor(Math.random() * 5))
