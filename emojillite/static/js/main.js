@@ -1,8 +1,13 @@
+const handleClick = () => {
+    console.log('lol')
+}
 
 const initGlobe = () => {
     let wwd = new WorldWind.WorldWindow("canvasOne")
+    wwd.navigator.range = 30000000
     wwd.addLayer(new WorldWind.BMNGLandsatLayer())
     wwd.addLayer(new WorldWind.BMNGOneImageLayer())
+    wwd.addEventListener('onClick', handleClick)
     return wwd
 }
 
@@ -28,14 +33,7 @@ const addMarker = ({lat, lng, alt}) => {
         false,
         placemarkAttributes
     )
-    placemark.label =
-        "(" +
-        placemark.position.latitude.toPrecision(5).toString() +
-        ", " +
-        placemark.position.longitude.toPrecision(5).toString() +
-        ", " +
-        placemark.position.altitude.toPrecision(10).toString() +
-        ")"
+    updateMarker({placemark: placemark, lat: lat, lng: lng, alt: alt})
     placemark.alwaysOnTop = true
     return placemark
 }
@@ -44,11 +42,11 @@ const updateMarker = ({ placemark, lat, lng, alt }) => {
     placemark.position = new WorldWind.Position(lat, lng, alt)
     placemark.label =
         "(" +
-        placemark.position.latitude.toPrecision(5).toString() +
+        placemark.position.latitude.toFixed(3).toString() +
         ", " +
-        placemark.position.longitude.toPrecision(5).toString() +
+        placemark.position.longitude.toFixed(3).toString() +
         ", " +
-        placemark.position.altitude.toPrecision(10).toString() +
+        (placemark.position.altitude/1000).toFixed(3).toString() +
         ")"
 }
 

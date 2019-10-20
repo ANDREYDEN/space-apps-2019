@@ -59,5 +59,6 @@ def getSatelliteByName(gName):
 #print(sphtocar(38 /180*3.14, 62 /180*3.14, 421))
 
 if __name__ == "__main__":
-    pos = getSatelliteByName("ISS (ZARYA)")
+    pos = getSatelliteByName("OAO 2")
+    print(pos[0]*180/3.14, pos[1]*180/3.14, pos[2])
     #print("test", (pos[0] * 180 /3.14, pos[1] *180 /3.14, pos[2]))
