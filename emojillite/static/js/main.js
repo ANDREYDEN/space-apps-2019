@@ -1,13 +1,9 @@
-const handleClick = () => {
-    console.log('lol')
-}
-
 const initGlobe = () => {
     let wwd = new WorldWind.WorldWindow("canvasOne")
     wwd.navigator.range = 30000000
     wwd.addLayer(new WorldWind.BMNGLandsatLayer())
     wwd.addLayer(new WorldWind.BMNGOneImageLayer())
-    wwd.addEventListener('onClick', handleClick)
+    wwd.addLayer(new WorldWind.ViewControlsLayer(wwd))
     return wwd
 }
 
@@ -35,6 +31,7 @@ const addMarker = ({ lat, lng, alt, image, name}) => {
     )
     updateMarker({placemark: placemark, lat: lat, lng: lng, alt: alt, name: name})
     placemark.alwaysOnTop = true
+    placemark.displayName = name
     return placemark
 }
 
@@ -62,13 +59,40 @@ function stringToCoords(stringData) {
 }
 
 window.onload = () => {
-    let wwd = initGlobe()
+    // temporary
+    let atmosphereEnabled = false
+
+    var wwd = initGlobe()
     var placemarkLayer = new WorldWind.RenderableLayer("Placemark")
     wwd.addLayer(placemarkLayer)
     sats.forEach(sat => {
         let data = stringToCoords(sat)
         placemarkLayer.addRenderable(addMarker({ lat: data[0], lng: data[1], alt: data[2], image: data[3], name: data[4]}))         
     });
+
+    var clickRecognizer = new WorldWind.ClickRecognizer(wwd, point => {
+        let x = point.clientX
+        let y = point.clientY
+
+        let picks = wwd.pick(wwd.canvasCoordinates(x, y))
+        picks.objects.forEach(pick => {
+            if (pick.userObject.displayName === 'NOAA') {
+                let atm = null
+                wwd.layers.forEach(layer => {
+                    if (layer.displayName == 'atm') {
+                        atm = layer
+                    }
+                });
+                if (atm == null) {
+                    atm = new WorldWind.AtmosphereLayer()
+                    atm.displayName = 'atm'
+                    wwd.addLayer(atm)
+                } else {
+                    wwd.removeLayer(atm)
+                }
+            }
+        });
+    })
     // setInterval(() => {
     //     lng += (0.01 * Math.floor(Math.random() * 5))
     //     lat += (0.01 * Math.floor(Math.random() * 5))
