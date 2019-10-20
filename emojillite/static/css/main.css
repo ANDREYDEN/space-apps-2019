@@ -1,0 +1,16 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-image: url("../img/background.png");
+    background-size: 100vw;
+    background-repeat: no-repeat;
+    text-align:center;
+}
+
+#canvasOne {
+    width: 100vw;
+    height: 100vh; 
+}
