@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from Satellite_parameters import cartesianToSpherical, getSatelliteByName
-from math import pi
+import json
 
 SATELLITES = {'OAO 2': 'star.png',
      'NOAA 1': 'atmosphere.png',
@@ -14,12 +14,10 @@ SATELLITES = {'OAO 2': 'star.png',
      'RESURS-DK 1': 'agriculture.png'}
 
 def index(request):
-    sats = []
+    satellites = {}
     for name in SATELLITES:
         lat, lng, alt = getSatelliteByName(name)
-        sats.append((str(round(float(lat/pi*180), 3)) + " " +
-                     str(round(float(lng/pi*180), 3)) + " " +
-                     str(round(float(alt*1000), 3)) + " " +
-                     SATELLITES[name] + " " + name))
+        satellites[name] = {'lat': lat, 'lng': lng,
+                            'alt': alt, 'img': SATELLITES[name]}
 
-    return render(request, "index.html", {'satellites': sats})
+    return render(request, "index.html", {'satellites': json.dumps(satellites)})

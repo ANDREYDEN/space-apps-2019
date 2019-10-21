@@ -1,40 +1,34 @@
-#input: name of the satellite as string
-#output: position of the given satellite in real-time (latitude(radians), longitude(radians), altitude(kilometers))
-
-
 from sgp4.earth_gravity import wgs72
 from sgp4.io import twoline2rv
 from datetime import datetime as dt
-import math
+from math import sqrt, atan, degrees, pi
 from os import path
 
-def sphtocar(lat, lon, alt):
-    earthRadius = 6371 + alt
-    x = earthRadius * math.cos(lat)*math.cos(lon)
-    y = earthRadius * math.cos(lat)*math.sin(lon)
-    z = earthRadius * math.sin(lat)
-    r = math.sqrt(x**2 + y**2 + z**2)
-    return x, y, z
-
+'''
+FUNCTION:
+    Converts (x, y, z) point into (latitude, longitude, altitude)
+ARGS:
+    x: float, y: float, z: float - coordinates
+RETURNS
+    (float, float, float) - latitude (deg), longitude (deg), altitude (m)
+'''
 def cartesianToSpherical(x, y, z):  
-    r = math.sqrt(x**2 + y**2 + z**2)
-    lat = 0
-    lon = 0
-    alt = 0
+    r = sqrt(x**2 + y**2 + z**2)
+    lat = lon = alt = 0
     if r == 0:
         pass
     elif x == 0 and y == 0:
-        lat = math.pi / 2 * abs(z) / z
+        lat = pi / 2 * abs(z) / z
         lon = 0
     else:
-        lat = math.atan(z / math.sqrt(x**2 + y**2))
-        lon = math.atan(y / x)
+        lat = atan(z / sqrt(x**2 + y**2))
+        lon = atan(y / x)
         if x < 0 and y > 0:
-            lon += math.pi
+            lon += pi
         if x < 0 and y < 0:
-            lon = lon - math.pi
+            lon = lon - pi
     alt = r - 6371
-    return lat, lon, alt
+    return degrees(lat), degrees(lon), alt * 1000
 
 def getSatelliteByName(gName):
     dirname = path.dirname(__file__)
@@ -55,6 +49,14 @@ def getSatelliteByName(gName):
             #print("pos", position)
     f.close()
     return cartesianToSpherical(position[0], position[1], position[2])
+
+def sphtocar(lat, lon, alt):
+    earthRadius = 6371 + alt
+    x = earthRadius * cos(lat)*cos(lon)
+    y = earthRadius * cos(lat)*sin(lon)
+    z = earthRadius * sin(lat)
+    r = sqrt(x**2 + y**2 + z**2)
+    return x, y, z
 
 #print(sphtocar(38 /180*3.14, 62 /180*3.14, 421))
 
