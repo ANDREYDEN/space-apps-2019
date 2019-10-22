@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.http import HttpResponse
 from Satellite_parameters import cartesianToSpherical, getSatelliteByName
 import json
 
@@ -21,3 +22,9 @@ def index(request):
                             'alt': alt, 'img': SATELLITES[name]}
 
     return render(request, "index.html", {'satellites': json.dumps(satellites)})
+
+def coords(request, name): 
+    try:
+        return HttpResponse(json.dumps(getSatelliteByName(name)))
+    except TypeError:
+        return HttpResponse(None)

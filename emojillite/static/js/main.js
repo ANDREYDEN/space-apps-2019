@@ -30,22 +30,23 @@ const newMarker = ({ lat, lng, alt, img, name}) => {
         false,
         placemarkAttributes
     )
-    updateMarker({placemark: placemark, lat: lat, lng: lng, alt: alt, name: name})
-    placemark.alwaysOnTop = true
     placemark.displayName = name
+    updateMarker({placemark: placemark, lat: lat, lng: lng, alt: alt})
+    placemark.alwaysOnTop = true
     return placemark
 }
 
-const updateMarker = ({ placemark, lat, lng, alt, name }) => {
+const updateMarker = ({ placemark, lat, lng, alt }) => {
     placemark.position = new WorldWind.Position(lat, lng, alt)
-    placemark.label = name 
-        // "\n(" +
-        // placemark.position.latitude.toFixed(3).toString() +
-        // ", " +
-        // placemark.position.longitude.toFixed(3).toString() +
-        // ", " +
-        // (placemark.position.altitude/1000).toFixed(3).toString() +
-        // ")"
+    placemark.label = placemark.displayName
+        + "\n(" +
+        placemark.position.latitude.toFixed(3).toString() +
+        ", " +
+        placemark.position.longitude.toFixed(3).toString() +
+        ", " +
+        (placemark.position.altitude/1000).toFixed(3).toString() +
+        ")"
+    return placemark
 }
 
 const onSatelliteClick = (wwd) => point => {
@@ -92,16 +93,25 @@ window.onload = () => {
     }
 
     var clickRecognizer = new WorldWind.ClickRecognizer(wwd, onSatelliteClick(wwd))
-    // setInterval(() => {
-    //     lng += (0.01 * Math.floor(Math.random() * 5))
-    //     lat += (0.01 * Math.floor(Math.random() * 5))
-    //     updateMarker({
-    //         placemark: placemarkLayer.renderables[0],
-    //         lat: lat,
-    //         lng: lng,
-    //         alt: 1000000
-    //     })
-    //     wwd.redraw()
-    // }, 100);
+    
+    // update satellite positions
+    setInterval(() => {
+        for (let i = 0; i < placemarkLayer.renderables.length; i++) {
+            let name = placemarkLayer.renderables[i].displayName
+            fetch("http://localhost:8000/coords/" + name)
+                .then(response => {
+                    response.json()
+                        .then(coords => {
+                            updateMarker({
+                                placemark: placemarkLayer.renderables[i],
+                                lat: coords[0],
+                                lng: coords[1],
+                                alt: coords[2]
+                            })
+                        })
+                })            
+        }
+        wwd.redraw()
+    }, 1000)
 }   
 
