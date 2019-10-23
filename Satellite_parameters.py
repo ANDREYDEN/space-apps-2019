@@ -50,7 +50,7 @@ def getSatelliteByName(gName):
     for x in range(0, len(lines) - 2, 3):
         satList.append({"name": lines[x].strip(), "satLine1": lines[x + 1].strip(), "satLine2": lines[x + 2].strip()})
 
-    position = 0
+    position = [0, 0, 0]
     for x in satList:
         if x["name"] == gName:
             line1 = x["satLine1"]
@@ -61,4 +61,4 @@ def getSatelliteByName(gName):
     return cartesianToSpherical(position[0], position[1], position[2])
 
 if __name__ == "__main__":
-    print(getSatelliteByName("TERRA"))
+    print(getSatelliteByName("OAO 2"))
