@@ -98,7 +98,7 @@ window.onload = () => {
     setInterval(() => {
         for (let i = 0; i < placemarkLayer.renderables.length; i++) {
             let name = placemarkLayer.renderables[i].displayName
-            fetch("http://localhost:8000/coords/" + name)
+            fetch("/coords/" + name)
                 .then(response => {
                     response.json()
                         .then(coords => {

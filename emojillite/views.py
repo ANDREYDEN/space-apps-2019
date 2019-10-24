@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from Satellite_parameters import cartesianToSpherical, getSatelliteByName
+from emojillite.static.py.Satellite_parameters import cartesianToSpherical, getSatelliteByName
 import json
 
 SATELLITES = {'OAO 2': 'star.png',

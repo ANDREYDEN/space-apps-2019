@@ -1,0 +1,1 @@
+web: gunicorn emojillite.wsgi --log-file -
