@@ -3,7 +3,7 @@ from sgp4.io import twoline2rv
 from datetime import datetime as dt
 from math import sqrt, atan, degrees, pi
 from os import path
-import time
+import requests
 
 '''
 FUNCTION:
@@ -44,23 +44,31 @@ RETURNS
     (float, float, float) - latitude (deg), longitude(deg), altitude(m)
 '''
 def getSatelliteByName(gName):
+    r = requests.get('https://celestrak.com/NORAD/elements/active.txt')
     dirname = path.dirname(__file__)
-    f = open(path.join(dirname, "satellite_data.txt"), "r")
-    lines = f.readlines()
-    satList = []
-    for x in range(0, len(lines) - 2, 3):
-        satList.append({"name": lines[x].strip(), "satLine1": lines[x + 1].strip(), "satLine2": lines[x + 2].strip()})
-
-    position = [0, 0, 0]
-    for x in satList:
-        if x["name"] == gName:
-            line1 = x["satLine1"]
-            line2 = x["satLine2"]
-            satellite = twoline2rv(line1, line2, wgs72)
-            position = satellite.propagate(dt.utcnow().year, dt.utcnow().month, dt.utcnow().day, dt.utcnow().hour, dt.utcnow().minute, dt.utcnow().second)[0]
+    f = open(path.join(dirname, "satellite_data_online.txt"), "w")
+    f.write(r.text)
     f.close()
+    f = open(path.join(dirname, "satellite_data_online.txt"), "r")
+    lines = f.readlines()
+    f.close()
+    satList = {}
+    line1 = r.text[r.text.find(gName + " ") + 26 : r.text.find(gName + " ") + 95]
+    line2 = r.text[r.text.find(gName + " ") + 97 : r.text.find(gName + " ") + 166]
+    print(gName)
+    print(line1)
+    print(line2)
+    '''
+    for x in range(0, len(lines) - 5, 6):
+        satList[lines[x].strip()] = (lines[x + 2].strip(), lines[x + 4].strip())
+    #for x in range(0, len(lines) - 2, 3):
+     #   satList[lines[x].strip()] = (lines[x + 1].strip(), lines[x + 2].strip())
+    position = [0, 0, 0]
+    line1, line2 = satList[gName]
+    '''
+    satellite = twoline2rv(line1, line2, wgs72)
+    position = satellite.propagate(dt.utcnow().year, dt.utcnow().month, dt.utcnow().day, dt.utcnow().hour, dt.utcnow().minute, dt.utcnow().second)[0]
     return cartesianToSpherical(position[0], position[1], position[2])
 
 if __name__ == "__main__":
-    print("ISS", getSatelliteByName("ISS (ZARYA)"))
-    print("OAO 2", getSatelliteByName("OAO 2"))
+   print("NOAA 19", getSatelliteByName("NOAA 19"))
