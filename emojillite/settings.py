@@ -25,7 +25,9 @@ SECRET_KEY = 'c$auxs22n_1m-7l)enwk8ry+eqvl_gpna(9=c$0a=8==x)8w4g'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'emojillite.herokuapp.com'
+]
 
 
 # Application definition
