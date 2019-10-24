@@ -3,6 +3,7 @@ from sgp4.io import twoline2rv
 from datetime import datetime as dt
 from math import sqrt, atan, degrees, pi
 from os import path
+import time
 
 '''
 FUNCTION:
@@ -56,9 +57,10 @@ def getSatelliteByName(gName):
             line1 = x["satLine1"]
             line2 = x["satLine2"]
             satellite = twoline2rv(line1, line2, wgs72)
-            position = satellite.propagate(dt.now().year, dt.now().month, dt.now().day + (dt.now().hour + 4) // 24, (dt.now().hour + 4) % 24, dt.now().minute, dt.now().second)[0] #y, m, d, h, m, s
+            position = satellite.propagate(dt.utcnow().year, dt.utcnow().month, dt.utcnow().day, dt.utcnow().hour, dt.utcnow().minute, dt.utcnow().second)[0]
     f.close()
     return cartesianToSpherical(position[0], position[1], position[2])
 
 if __name__ == "__main__":
-    print(getSatelliteByName("OAO 2"))
+    print("ISS", getSatelliteByName("ISS (ZARYA)"))
+    print("OAO 2", getSatelliteByName("OAO 2"))
