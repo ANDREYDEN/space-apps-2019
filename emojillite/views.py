@@ -4,7 +4,7 @@ from emojillite.static.py.Satellite_parameters import cartesianToSpherical, getS
 import json
 
 SATELLITES = {'OAO 2': 'star.png',
-     'NOAA 1': 'atmosphere.png',
+     'NOAA 6': 'atmosphere.png',
      'METEOR PRIRODA': 'temperature.png',
      'COSMOS 1500': 'ocean.png',
      'AJISAI (EGS)': 'earth.png',
