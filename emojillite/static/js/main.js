@@ -55,7 +55,7 @@ const onSatelliteClick = (wwd) => point => {
     let picks = wwd.pick(wwd.canvasCoordinates(x, y))
     
     picks.objects.forEach(pick => {
-        if (pick.userObject.displayName === "NOAA 1") {
+        if (pick.userObject.displayName === "CICERO 8") {
             let atm = null
             wwd.layers.forEach(layer => {
                 if (layer.displayName == "atm") {

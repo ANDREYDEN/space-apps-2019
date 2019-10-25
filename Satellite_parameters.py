@@ -34,6 +34,15 @@ def cartesianToSpherical(x, y, z):   #x, y, z - center of the Earth
     alt = r - 6371
     return degrees(lat), degrees(lon), alt * 1000
 
+'''
+FUNCTION:
+    Updates the file with the active satellites
+'''
+def getSatellites():
+    r = requests.get('https://celestrak.com/NORAD/elements/active.txt')
+    dirname = path.dirname(__file__)
+    with open(path.join(dirname, "satellite_data_online.txt"), "w") as f:
+        f.write(r.text)
 
 '''
 FUNCTION:
@@ -44,14 +53,9 @@ RETURNS
     (float, float, float) - latitude (deg), longitude(deg), altitude(m)
 '''
 def getSatelliteByName(gName):
-    r = requests.get('https://celestrak.com/NORAD/elements/active.txt')
     dirname = path.dirname(__file__)
-    f = open(path.join(dirname, "satellite_data_online.txt"), "w")
-    f.write(r.text)
-    f.close()
-    f = open(path.join(dirname, "satellite_data_online.txt"), "r")
+    with open(path.join(dirname, "satellite_data_online.txt"), "r") as f:
     lines = f.readlines()
-    f.close()
     satList = {}
     satList["OAO 2"] = ("1  3597U 68110A   19297.12489875  .00000025  00000-0  12281-4 0  9997", "2  3597  34.9939 284.8592 0006194 273.1983  86.7999 14.45838868682283")
     satList["COSMOS 1500"] = ("1 14372U 83099A   19297.16869194  .00000531  00000-0  24058-4 0  9990", "2 14372  82.5177 213.9841 0014680 344.1286 144.7925 15.1852158696811")
