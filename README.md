@@ -1,6 +1,8 @@
 # 🛰️ [EMOJILLITE](https://emojillite.herokuapp.com/) 🛰️
 Emojillite is a tool for people to explore major satellites that orbit Earth and discover the data they are collecting.
 
+## [TRY IT OUT](https://emojillite.herokuapp.com/) 🌎
+
 ## PROBLEM 🤔
 A lot of people are unfamiliar with the contribution done by various satellites which monitor earth and collect the data about our planet.
 
@@ -22,5 +24,3 @@ Emojillite uses emojis to visualize the real-time satellite data as well as thei
 ## FUTURE PLANS 🔮
 - Adding more satellites and displaying more information about them
 - Correctly display the data collected by the selected satellites
-
-## [TRY IT OUT](https://emojillite.herokuapp.com/) 🌎
