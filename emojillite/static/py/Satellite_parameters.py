@@ -34,6 +34,15 @@ def cartesianToSpherical(x, y, z):   #x, y, z - center of the Earth
     alt = r - 6371
     return degrees(lat), degrees(lon), alt * 1000
 
+'''
+FUNCTION:
+    Updates the file with the active satellites
+'''
+def getSatellites():
+    r = requests.get('https://celestrak.com/NORAD/elements/active.txt')
+    dirname = path.dirname(__file__)
+    with open(path.join(dirname, "satellite_data_online.txt"), "w") as f:
+        f.write(r.text)
 
 '''
 FUNCTION:
