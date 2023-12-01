@@ -1,3 +1,5 @@
+const updateInterval = 5000
+
 const initGlobe = () => {
     let wwd = new WorldWind.WorldWindow("canvasOne")
     wwd.navigator.range = 30000000
@@ -112,6 +114,6 @@ window.onload = () => {
                 })            
         }
         wwd.redraw()
-    }, 1000)
+    }, 5000)
 }   
 

@@ -18,10 +18,14 @@ def index(request):
     getSatellites()
     satellites = {}
     for name in SATELLITES:
-        lat, lng, alt = getSatelliteByName(name)
-        satellites[name] = {'lat': lat, 'lng': lng,
-                            'alt': alt, 'img': SATELLITES[name]}
+        try:
+            lat, lng, alt = getSatelliteByName(name)
+            satellites[name] = {'lat': lat, 'lng': lng,
+                                'alt': alt, 'img': SATELLITES[name]}
+        except ValueError:
+            print('Error occured while processing stellite: ' + name)
 
+    print(satellites)
     return render(request, "index.html", {'satellites': json.dumps(satellites)})
 
 def coords(request, name): 
